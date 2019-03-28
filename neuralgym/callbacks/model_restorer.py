@@ -54,12 +54,14 @@ class ModelRestorer(OnceCallback):
                 for var_name, saved_var_name in var_names:
                     curr_var = name2var[saved_var_name]
                     var_shape = curr_var.get_shape().as_list()
+                    logger.info('- restoring variable: {} | var_shape: {} | saved_shape: {}'
+                                .format(curr_var.name, var_shape, saved_shapes[saved_var_name]))
                     if var_shape == saved_shapes[saved_var_name]:
                         restore_vars.append(curr_var)
-                        logger.info('- restoring variable: {}'
-                                    .format(curr_var.name))
+                        logger.info('- restored: {}'.format(curr_var.name))
             saver = tf.train.Saver(restore_vars)
             saver.restore(sess, ckpt_file)
+            logger.info('model restored!')
 
         if not self._no_ckpt_file:
             callback_log('Trigger ModelRestorer: Load model from %s.'

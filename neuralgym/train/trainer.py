@@ -4,6 +4,8 @@ import logging
 import numpy as np
 import tensorflow as tf
 
+from tensorflow.python import debug as tf_debug
+
 from ..utils.logger import ProgressBar
 from ..callbacks import CallbackLoc
 from ..callbacks import PeriodicCallback, OnceCallback, ScheduledCallback
@@ -108,6 +110,7 @@ class Trainer(object):
 
         """
         sess = self.context['sess']
+        # sess = tf_debug.LocalCLIDebugWrapperSession(sess, thread_name_filter="MainThread$")
         max_iters = self.context['max_iters']
         self.update_callbacks()
         if self.context.get('global_step') is None:

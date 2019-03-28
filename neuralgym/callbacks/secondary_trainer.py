@@ -1,6 +1,7 @@
 """ run discriminator """
 import time
 import tensorflow as tf
+from tensorflow.python import debug as tf_debug
 
 from . import PeriodicCallback, CallbackLoc
 from ..utils.logger import ProgressBar, callback_log
@@ -23,4 +24,5 @@ class SecondaryTrainer(PeriodicCallback, Trainer):
 
     def run(self, sess, step):
         self.context['sess'] = sess
+        # self.context['sess'] = tf_debug.LocalCLIDebugWrapperSession(sess, thread_name_filter="MainThread$")
         self.train()
