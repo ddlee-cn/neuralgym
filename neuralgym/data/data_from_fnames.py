@@ -3,6 +3,7 @@ import threading
 import logging
 import time
 
+import numpy as np
 import cv2
 import tensorflow as tf
 
@@ -148,7 +149,13 @@ class DataFromFNames(Dataset):
                 self._queue.size(), dtypes.float32) * (1. / capacity))
 
     def read_img(self, filename):
-        img = cv2.imread(filename)
+        if self.shapes[0][-1] != 3:
+            img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+            img = np.expand_dims(img, -1)
+            # Attention: mask should be 0-1 values! this cause large value in x tensors
+            img = img/255.0
+        else:
+            img = cv2.imread(filename)
         if img is None:
             logger.info('image is None, sleep this thread for 0.1s.')
             time.sleep(0.1)
