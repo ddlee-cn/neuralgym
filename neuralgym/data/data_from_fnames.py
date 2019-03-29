@@ -153,7 +153,7 @@ class DataFromFNames(Dataset):
             img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
             img = np.expand_dims(img, -1)
             # Attention: mask should be 0-1 values! this cause large value in x tensors
-            img = img/255.0
+            img = (255-img)/255.0
         else:
             img = cv2.imread(filename)
         if img is None:

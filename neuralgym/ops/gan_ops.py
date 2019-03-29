@@ -86,5 +86,5 @@ def gradients_penalty(x, y, mask=None, norm=1.):
     gradients = tf.gradients(y, x)[0]
     if mask is None:
         mask = tf.ones_like(gradients)
-    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients) * mask, axis=[1, 2, 3]))
+    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients) * mask, axis=[1, 2, 3]) + 1e-14)
     return tf.reduce_mean(tf.square(slopes - norm))
