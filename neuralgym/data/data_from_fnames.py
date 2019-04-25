@@ -187,6 +187,9 @@ class DataFromFNames(Dataset):
                             random_h, random_w, align=False)  # use last rand
                     else:
                         img = cv2.resize(img, tuple(self.shapes[i][:-1][::-1]))
+                        if self.shapes[0][-1] != 3:
+                            img = np.expand_dims(img, -1)
+                    # print(img.shape)
                     imgs.append(img)
             if self.return_fnames:
                 batch_data.append(imgs + list(filenames))
